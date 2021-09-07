@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import java.util.List;
 
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,7 +24,7 @@ public class TransactionServiceImpl implements TransactionService {
 	private AbsExcelReader excelReader;
 	
 	@Autowired
-    private RabbitTemplate rabbitTemplate;
+	private RabbitTemplate rabbitTemplate;
 	
 	@Value("${javainuse.rabbitmq.exchange}")
 	private String exchange;
@@ -48,7 +49,6 @@ public class TransactionServiceImpl implements TransactionService {
 		
 		transactionImportedFile = transactionImportedFileRepository.save(transactionImportedFile);
 		//excelReader.readExcelFile(file);
-		rabbitTemplate.setUseDirectReplyToContainer(false);
 		rabbitTemplate.convertAndSend(exchange, routingkey, "hello");
 
 	}
