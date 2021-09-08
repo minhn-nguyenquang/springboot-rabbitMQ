@@ -21,7 +21,7 @@ public class Transaction extends AuditEntity {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "imported_file_id", nullable = false)
+	@JoinColumn(name = "imported_file_id")
 	private TransactionImportedFile importedFile;
 
 	@Column(name = "content")

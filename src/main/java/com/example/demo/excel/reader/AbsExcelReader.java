@@ -1,6 +1,8 @@
 package com.example.demo.excel.reader;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,15 +18,24 @@ public abstract class AbsExcelReader {
 
 	protected abstract void readDataFromWorkbook(Workbook workbook);
 
-    public void readExcelFile(MultipartFile multipartFile) {
-        try(Workbook workbook = new XSSFWorkbook(multipartFile.getInputStream())) {
+    public void readExcelFile(MultipartFile multipartFile) throws IOException {
+    	readExcelFile(multipartFile.getInputStream());
+    }
+
+    public void readExcelFile(byte[] file) {
+    	InputStream is = new ByteArrayInputStream(file);
+    	readExcelFile(is);
+    }
+    
+    public void readExcelFile(InputStream is) {
+        try(Workbook workbook = new XSSFWorkbook(is)) {
             readDataFromWorkbook(workbook);
         } catch(IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-
+    
     protected Object getCellValueByCellName(Workbook workbook, Sheet sheet, String cellName) {
         CellAddress cellAddress = new CellAddress(cellName);
         Row row = sheet.getRow(cellAddress.getRow());

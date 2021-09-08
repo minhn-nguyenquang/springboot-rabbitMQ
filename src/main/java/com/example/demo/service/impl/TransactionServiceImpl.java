@@ -1,17 +1,17 @@
 package com.example.demo.service.impl;
 
+import java.io.IOException;
 import java.util.List;
 
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.TransactionImportedFile;
 import com.example.demo.excel.reader.AbsExcelReader;
+import com.example.demo.exception.ApplicationException;
+import com.example.demo.model.request.TransactionFileRequest;
 import com.example.demo.model.response.TransactionResponse;
 import com.example.demo.repository.TransactionImportedFileRepository;
 import com.example.demo.service.TransactionService;
@@ -19,19 +19,9 @@ import com.example.demo.service.TransactionService;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-	@Autowired
-	@Qualifier("transactionExcelReader")
-	private AbsExcelReader excelReader;
 	
 	@Autowired
-	private RabbitTemplate rabbitTemplate;
-	
-	@Value("${javainuse.rabbitmq.exchange}")
-	private String exchange;
-	
-	@Value("${javainuse.rabbitmq.routingkey}")
-	private String routingkey;
-	
+	private RabbitMqSender rabbitMqSender;
 	@Autowired
 	private TransactionImportedFileRepository transactionImportedFileRepository;
 	
@@ -48,9 +38,22 @@ public class TransactionServiceImpl implements TransactionService {
 		transactionImportedFile.setStatus("processing");
 		
 		transactionImportedFile = transactionImportedFileRepository.save(transactionImportedFile);
-		//excelReader.readExcelFile(file);
-		rabbitTemplate.convertAndSend(exchange, routingkey, "hello");
-
+		sendFileToRabbitMq(file, transactionImportedFile);
+	}
+	
+	private void sendFileToRabbitMq(MultipartFile file, TransactionImportedFile transactionImportedFile) {
+		try {
+			byte[] fileData = file.getBytes();
+			String fileType = file.getContentType();
+			TransactionFileRequest transactionFileRequest = new TransactionFileRequest();
+			transactionFileRequest.setFileData(fileData);
+			transactionFileRequest.setContentType(fileType);
+			transactionFileRequest.setFileId(transactionImportedFile.getId());
+			rabbitMqSender.sendFile(transactionFileRequest);
+		} catch (IOException e) {
+			throw new ApplicationException("Exception file: "+ e);
+		}
+		
 	}
 
 }

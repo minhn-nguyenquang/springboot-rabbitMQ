@@ -67,3 +67,22 @@
 <p>Click ON to OFF next to Temporary to prevent having to update password on first login
 
 ![](/imgForReadme/keycloak_changepassword.png)
+
+<p> Now, we can use the created user to sign in the system. let's open a browser and visit <a href="http://localhost:8090/swagger-ui/#/"> http://localhost:8090/swagger-ui/#/</a> to open the swagger and test the API
+
+![](/imgForReadme/signin(1).png)
+
+![](/imgForReadme/signin(2).png)
+
+<p>Now we can use <b>access_token<b> to call API
+
+<h4>2. Install RabbitMQ</h4>
+
+<p>RabbitMQ is a messaging broker - an intermediary for messaging. It gives your applications a common platform to send and receive messages, and your messages a safe place to live until received.</p>
+
+<p> It's easy to install RabbitMQ with docker via command:<p>
+<b>docker run -d --hostname my-rabbit --name some-rabbit rabbitmq:3</b>
+
+<p>Now let's open a browser and visit <a href="http://localhost:15672"> http://localhost:15672</a> with user <b>guest/guest</b> to open the rabbitMQ console
+
+![](/imgForReadme/rabbitMQ.png)
