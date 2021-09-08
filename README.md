@@ -74,7 +74,7 @@
 
 ![](/imgForReadme/signin(2).png)
 
-<p>Now we can use <b>access_token<b> to call API
+<p>Now we can use <b>access_token</b> to call API
 
 <h4>2. Install RabbitMQ</h4>
 
