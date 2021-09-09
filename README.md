@@ -11,6 +11,8 @@
 
 <p>That why I choose <b>Spring Boot </b>, <b>Keycloak</b> as authentication server, <b>RabbitMQ</b> as messaging application. The System Architecture same as image below:</p>
 
+![](/imgForReadme/diagram.png)
+
 <h3>Postgres Database(transaction_db)</h3>
  <ul>
   <li><b>transaction_imported_file</b> table: Store all information of imported transaction files </li>
@@ -18,7 +20,9 @@
 </ul>
 
 <h3>--------------------------Work Flow--------------------------</h3>
-<h4>1. Authentication</h4>
+
+<h3>1. Authentication</h3>
+
  <p>- User/Client have to be authenticated before import transactions. In this system we use Keycloak as authentication service. Client will be authenticated as image below:</p>
  
 ![](/imgForReadme/keycloak_wf.png)
@@ -81,7 +85,7 @@
 <p>RabbitMQ is a messaging broker - an intermediary for messaging. It gives your applications a common platform to send and receive messages, and your messages a safe place to live until received.</p>
 
 <p> It's easy to install RabbitMQ with docker via command:<p>
-<b>docker run -d --hostname my-rabbit --name some-rabbit rabbitmq:3</b>
+<b>docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management</b>
 
 <p>Now let's open a browser and visit <a href="http://localhost:15672"> http://localhost:15672</a> with user <b>guest/guest</b> to open the rabbitMQ console
 
