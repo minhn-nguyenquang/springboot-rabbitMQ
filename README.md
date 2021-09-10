@@ -74,6 +74,10 @@
 
 <p> Now, we can use the created user to sign in the system. let's open a browser and visit <a href="http://localhost:8090/swagger-ui/#/"> http://localhost:8090/swagger-ui/#/</a> to open the swagger and test the API
 
+ ```
+ curl -X POST "http://localhost:8090/v1/auth/signin" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"password\": \"yourpassword\", \"username\": \"yourusername\"}"
+ ```
+ 
 ![](/imgForReadme/signin(1).png)
 
 ![](/imgForReadme/signin(2).png)
@@ -97,6 +101,10 @@
 <p> I have created a template excel file and place it in folder <b>src/main/resource/excel/transaction_sample.xlsx</b></p>
 <p>Execute the API, we will receive the response 200 OK
 
+ ```
+ curl -X POST "http://localhost:8090/v1/transactions/import-excel" -H "accept: */*" -H "Content-Type: multipart/form-data" -F "file=@transaction_sample.xlsx;type=application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+ ```
+ 
 ![](/imgForReadme/api_import.png)
 
 <p>In case the amount of data is milion, the system have to take a while to import transactions. You can check the status of file by API <b>/v1/transactions/imported-files</b> to view all imported files 
