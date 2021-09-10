@@ -4,17 +4,16 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.TransactionImportedFile;
-import com.example.demo.excel.reader.AbsExcelReader;
 import com.example.demo.exception.ApplicationException;
 import com.example.demo.model.request.TransactionFileRequest;
-import com.example.demo.model.response.TransactionResponse;
+import com.example.demo.model.response.TransactionImportedFileResponse;
 import com.example.demo.repository.TransactionImportedFileRepository;
 import com.example.demo.service.TransactionService;
+import com.example.demo.util.BeanUtil;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -25,11 +24,7 @@ public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	private TransactionImportedFileRepository transactionImportedFileRepository;
 	
-	@Override
-	public List<TransactionResponse> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public void importTransactionFromExcelFile(MultipartFile file) {
@@ -54,6 +49,18 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new ApplicationException("Exception file: "+ e);
 		}
 		
+	}
+
+	@Override
+	public List<TransactionImportedFileResponse> getTransactionImportedFiles() {
+		List<TransactionImportedFile> fileEntities = (List<TransactionImportedFile>) transactionImportedFileRepository.findAll();
+		return BeanUtil.listCopyProperties(fileEntities, TransactionImportedFileResponse.class);
+	}
+
+	@Override
+	public TransactionImportedFileResponse getTransactionImportedFileById(Long id) {
+		TransactionImportedFile entity = transactionImportedFileRepository.getById(id).get();
+		return BeanUtil.copyProperties(entity, TransactionImportedFileResponse.class);
 	}
 
 }

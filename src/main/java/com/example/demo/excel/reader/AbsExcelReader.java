@@ -23,6 +23,9 @@ public abstract class AbsExcelReader {
     }
 
     public void readExcelFile(byte[] file) {
+    	if (file == null || file.length <= 0) {
+    		return;
+    	}
     	InputStream is = new ByteArrayInputStream(file);
     	readExcelFile(is);
     }

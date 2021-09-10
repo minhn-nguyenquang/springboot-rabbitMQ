@@ -90,3 +90,29 @@
 <p>Now let's open a browser and visit <a href="http://localhost:15672"> http://localhost:15672</a> with user <b>guest/guest</b> to open the rabbitMQ console
 
 ![](/imgForReadme/rabbitMQ.png)
+
+ <h3>--------------------------Let Test Our Application-------------------------------</h3>
+
+<p> To import the transactions excel file, use API <b>/v1/transactions/import-excel</b></p>
+<p> I have created a template excel file and place it in folder <b>src/main/resource/excel/transaction_sample.xlsx</b></p>
+<p>Execute the API, we will receive the response 200 OK
+
+![](/imgForReadme/api_import.png)
+
+<p>In case the amount of data is milion, the system have to take a while to import transactions. You can check the status of file by API <b>/v1/transactions/imported-files</b> to view all imported files 
+
+ ```
+ curl -X GET http://localhost:8090/v1/transactions/imported-files -s | jq
+ ```
+<p>OR view detail of a file </p>
+
+ ```
+ curl -X GET http://localhost:8090/v1/transactions/imported-files/{id} -s | jq
+ ```
+
+![](/imgForReadme/api_file_processing.png)
+
+<p>After all transactions are imported, the status of file will be updated to <b>completed</>
+
+![](/imgForReadme/api_file_complete.png)
+
